@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="武侠小说网站，致力提供给热爱武侠的读者一个阅读与交流的平台">
+  <meta name="keywords" content="武侠，小说，交流，传统，古风">
+  <title>武侠小说</title>
+
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/common.css">
+  <link rel="stylesheet" href="../css/index.css">
+  <link rel="stylesheet" href="../plugins/elementui/index.css">
+  <link rel="stylesheet" href="../plugins/font-awesome/css/font-awesome.min.css">
+  <style>
+      .el-dropdown-link {
+          cursor: pointer;
+          color: #409EFF;
+      }
+      .dropdown-menu li:hover{
+          background-color: #cccccc !important;
+          color: black !important;
+      }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <!-- 网站标题之类 -->
+    <div class="websiteTitle">
+      <h1 class="head">飞雪连天射白鹿，笑书神侠倚碧鸳</h1>
+      <div class="person">
+        <div class="selectBox">
+          <el-dropdown trigger="click">
+            <span class="el-dropdown-link">
+              <img src="../images/25231.png" alt="头像" width="50px" height="50px">
+            </span>
+            <el-dropdown-menu class="dropdown-menu" slot="dropdown">
+              <el-dropdown-item>个人中心</el-dropdown-item>
+              <el-dropdown-item>消息列表</el-dropdown-item>
+              <el-dropdown-item>关注列表</el-dropdown-item>
+              <el-dropdown-item>退出登录</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+      </div>
+    </div>
+
+    <!-- 主页左侧栏 -->
+    <div class="left">
+      <div class="authorNavi">
+        <button type="button" @click="currentFrame='./frame1.html'">
+          作家栏
+        </button>
+      </div>
+      <ul>
+        <li>
+          <button type="button" @click="currentFrame='./frame2.html'">
+            金庸
+          </button>
+        </li>
+        <li>
+          <button type="button" @click="currentFrame='./frame3.html'">
+            古龙
+          </button>
+        </li>
+        <li>
+          <button type="button" @click="currentFrame='./frame4.html'">
+            温瑞安
+          </button>
+        </li>
+        <li>
+          <button type="button" @click="currentFrame='./frame5.html'">
+            梁羽生
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <!-- 主页右侧栏 -->
+    <div class="right">
+      <iframe :src=currentFrame class="rightFrame" scrolling="no"></iframe>
+    </div>
+  </div>
+</body>
+
+<script src="../js/vue.js"></script>
+<script src="../plugins/elementui/index.js"></script>
+<script>
+  new Vue({
+      el: '#app',
+      data: {
+        currentFrame: './frame1.html',
+      },
+      methods: {
+
+      },
+      mounted() {
+          axios.get("/test/haha.do?id=3").then((resp) => {
+              var content = resp.data.data;
+              alert(content);
+          })
+      }
+  });
+</script>
+</html>
