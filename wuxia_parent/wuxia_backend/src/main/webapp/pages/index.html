@@ -92,13 +92,8 @@
         currentFrame: './frame1.html',
       },
       methods: {
-
       },
       mounted() {
-          axios.get("/test/haha.do?id=3").then((resp) => {
-              var content = resp.data.data;
-              alert(content);
-          })
       }
   });
 </script>

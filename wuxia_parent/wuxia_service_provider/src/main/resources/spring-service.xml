@@ -13,7 +13,7 @@
                             http://www.springframework.org/schema/context
                             http://www.springframework.org/schema/context/spring-context.xsd">
     <!-- 指定应用名称 -->
-    <dubbo:application name="health_service_provider"/>
+    <dubbo:application name="wuxia_service_provider"/>
     <!--指定暴露服务的端口，如果不指定默认为20880-->
     <dubbo:protocol name="dubbo" port="20887"/>
     <!--指定服务注册中心地址-->

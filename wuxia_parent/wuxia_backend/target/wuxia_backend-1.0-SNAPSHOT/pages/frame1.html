@@ -16,11 +16,12 @@
     <div class="fixBug clearfix">
       <ul class="clearfix bookList" v-for="book in bookList">
         <li>
+
           <a :href="book.pageUrl">
-            <img :src="book.imgSrc" alt="雪山飞狐" height="330px" width="275px">
+            <img src={{book.imgSrc}} alt="雪山飞狐" height="330px" width="275px">
           </a>
           <div class="bookName">&lt;&lt;{{book.bookName}}&gt;&gt;</div>
-          <div class="author">{{book.bookName}}</div>
+          <div class="author">{{book.author}}</div>
         </li>
       </ul>
     </div>
@@ -28,12 +29,11 @@
     <div class="block">
       <el-pagination
               class="pagination"
-              @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
               :current-page.sync="currentPage"
-              :page-size="100"
+              :page-size="10"
               layout="pager"
-              :total="1000">
+              :total="totalData">
       </el-pagination>
     </div>
     <!-- 主页底栏 -->
@@ -44,72 +44,45 @@
 
 <script src="../js/vue.js"></script>
 <script src="../plugins/elementui/index.js"></script>
+<script src="../js/axios-0.18.0.js"></script>
 <script>
     new Vue({
         el: '#app',
         data: {
             currentPage: 1,
-            bookList: [
-                {
-                    id: 11201,
-                    imgSrc: '../images/雪山飞狐.jpg',
-                    bookName: '雪山飞狐',
-                    author: '金庸',
-                    pageUrl: './bookNavi.html?bookId=11201'
-                },
-                {
-                    imgSrc: '../images/雪山飞狐.jpg',
-                    bookName: '雪山飞狐',
-                    author: '金庸'
-                },
-                {
-                    imgSrc: '../images/雪山飞狐.jpg',
-                    bookName: '雪山飞狐',
-                    author: '金庸'
-                },
-                {
-                    imgSrc: '../images/雪山飞狐.jpg',
-                    bookName: '雪山飞狐',
-                    author: '金庸'
-                },
-                {
-                    imgSrc: '../images/雪山飞狐.jpg',
-                    bookName: '雪山飞狐',
-                    author: '金庸'
-                },{
-                    imgSrc: '../images/雪山飞狐.jpg',
-                    bookName: '雪山飞狐',
-                    author: '金庸'
-                },
-                {
-                    imgSrc: '../images/雪山飞狐.jpg',
-                    bookName: '雪山飞狐',
-                    author: '金庸'
-                },
-                {
-                    imgSrc: '../images/雪山飞狐.jpg',
-                    bookName: '雪山飞狐',
-                    author: '金庸'
-                },
-                {
-                    imgSrc: '../images/雪山飞狐.jpg',
-                    bookName: '雪山飞狐',
-                    author: '金庸'
-                },
-                {
-                    imgSrc: '../images/雪山飞狐.jpg',
-                    bookName: '雪山飞狐',
-                    author: '金庸'
-                }
-            ]
+            totalData: 300,
+            bookList: [],
         },
         methods: {
-            handleSizeChange(val) {
-                console.log(`每页 ${val} 条`);
+            findPage(){
+                let param = {
+                    pageSize: 10,
+                    currentPage: this.currentPage
+                }
+                axios.post("/book/findPage.do", param).then((res) => {
+                    if(res){
+                        this.totalData = res.data.total;
+                        this.bookList = res.data.rows;
+                        for(let book in this.bookList){
+                          let bookId = book.id;
+                          /* TODO 不知道这样能不能改变 */
+                          book.pageUrl = './bookNavi.html?bookId' + bookId;
+                        }
+                    }else{
+                        this.$message({
+                            message: '请求超时',
+                            type: 'error'
+                        })
+                    }
+                })
             },
             handleCurrentChange(val) {
-                console.log(`当前页: ${val}`);
+                this.currentPage = val;
+                this.findPage();
             }
+        },
+        created() {
+            this.findPage();
         }
     });
 </script>

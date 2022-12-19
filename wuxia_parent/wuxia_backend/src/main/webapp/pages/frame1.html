@@ -16,11 +16,12 @@
     <div class="fixBug clearfix">
       <ul class="clearfix bookList" v-for="book in bookList">
         <li>
-          <a :href="book.pageUrl">
+
+          <a :href="book.bookPageUrl">
             <img :src="book.imgSrc" alt="雪山飞狐" height="330px" width="275px">
           </a>
           <div class="bookName">&lt;&lt;{{book.bookName}}&gt;&gt;</div>
-          <div class="author">{{book.bookName}}</div>
+          <div class="author">{{book.author}}</div>
         </li>
       </ul>
     </div>
@@ -28,90 +29,63 @@
     <div class="block">
       <el-pagination
               class="pagination"
-              @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
               :current-page.sync="currentPage"
-              :page-size="100"
+              :page-size="10"
               layout="pager"
-              :total="1000">
+              :total="totalData">
       </el-pagination>
     </div>
-    <!-- 主页底栏 -->
-    <div class="foot">
-      <div class="content">联系网站作者: slamd14...@...com</div>
-    </div>
-  </div>
 
+  </div>
+  <!-- 主页底栏 -->
+  <div class="foot">
+    <div class="content">联系网站作者: slamd14...@...com</div>
+  </div>
 <script src="../js/vue.js"></script>
 <script src="../plugins/elementui/index.js"></script>
+<script src="../js/axios-0.18.0.js"></script>
 <script>
     new Vue({
         el: '#app',
         data: {
             currentPage: 1,
-            bookList: [
-                {
-                    id: 11201,
-                    imgSrc: '../images/xueshanfeihu.jpg',
-                    bookName: '雪山飞狐',
-                    author: '金庸',
-                    pageUrl: './bookNavi.html?bookId=11201'
-                },
-                {
-                    imgSrc: '../images/xueshanfeihu.jpg',
-                    bookName: '雪山飞狐',
-                    author: '金庸'
-                },
-                {
-                    imgSrc: '../images/xueshanfeihu.jpg',
-                    bookName: '雪山飞狐',
-                    author: '金庸'
-                },
-                {
-                    imgSrc: '../images/xueshanfeihu.jpg',
-                    bookName: '雪山飞狐',
-                    author: '金庸'
-                },
-                {
-                    imgSrc: '../images/xueshanfeihu.jpg',
-                    bookName: '雪山飞狐',
-                    author: '金庸'
-                },
-                {
-                    imgSrc: '../images/xueshanfeihu.jpg',
-                    bookName: '雪山飞狐',
-                    author: '金庸'
-                },
-                {
-                    imgSrc: '../images/xueshanfeihu.jpg',
-                    bookName: '雪山飞狐',
-                    author: '金庸'
-                },
-                {
-                    imgSrc: '../images/xueshanfeihu.jpg',
-                    bookName: '雪山飞狐',
-                    author: '金庸'
-                },
-                {
-                    imgSrc: '../images/xueshanfeihu.jpg',
-                    bookName: '雪山飞狐',
-                    author: '金庸'
-                },
-                {
-                    imgSrc: '../images/xueshanfeihu.jpg',
-                    bookName: '雪山飞狐',
-                    author: '金庸'
-                },
-
-            ]
+            totalData: 300,
+            bookList: []
         },
         methods: {
-            handleSizeChange(val) {
-                console.log(`每页 ${val} 条`);
+            findPage(){
+                let param = {
+                    pageSize: 10,
+                    currentPage: this.currentPage
+                }
+                axios.post("/book/findPage.do", param).then((res) => {
+                    if(res){
+                        this.totalData = res.data.total;
+                        this.bookList = res.data.rows;
+                        this.bookList = this.bookList.map((book, index) => {
+                            let bookId = book.id;
+                            let pageUrl = './bookNavi.html?bookId=' + bookId;
+                            let temp = {bookPageUrl: pageUrl};
+                            /* 将bookPageUrl属性添加到book中，因为后端JavaBean中的Book并没有这个属性 */
+                            book = {...temp, ...book};
+                            return book;
+                        })
+                    }else{
+                        this.$message({
+                            message: '请求超时',
+                            type: 'error'
+                        })
+                    }
+                })
             },
             handleCurrentChange(val) {
-                console.log(`当前页: ${val}`);
+                this.currentPage = val;
+                this.findPage();
             }
+        },
+        created() {
+            this.findPage();
         }
     });
 </script>

@@ -1,5 +1,6 @@
 com\yyx\entity\PageResult.class
 com\yyx\constant\RedisConstant.class
 com\yyx\entity\QueryPageBean.class
+com\yyx\pojo\Book.class
 com\yyx\utils\AliyunOSSUtil.class
 com\yyx\entity\Result.class

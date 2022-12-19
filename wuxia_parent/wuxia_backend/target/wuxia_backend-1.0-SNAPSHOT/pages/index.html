@@ -84,6 +84,7 @@
 
 <script src="../js/vue.js"></script>
 <script src="../plugins/elementui/index.js"></script>
+<script src="../js/axios-0.18.0.js"></script>
 <script>
   new Vue({
       el: '#app',
@@ -91,13 +92,8 @@
         currentFrame: './frame1.html',
       },
       methods: {
-
       },
       mounted() {
-          axios.get("/test/haha.do?id=3").then((resp) => {
-              var content = resp.data.data;
-              alert(content);
-          })
       }
   });
 </script>

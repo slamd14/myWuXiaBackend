@@ -26,7 +26,7 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
     <!-- 指定应用名称 -->
-    <dubbo:application name="health_backend" />
+    <dubbo:application name="wuxia_backend" />
     <!--指定服务注册中心地址-->
     <dubbo:registry address="zookeeper://127.0.0.1:2181"  file="dubbo-registry/dubbo-registry.properties"/>
     <!--批量扫描-->
