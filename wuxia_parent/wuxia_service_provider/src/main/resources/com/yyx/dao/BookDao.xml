@@ -4,7 +4,31 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yyx.dao.BookDao">
 
-    <select id="findPage" resultType="com.yyx.pojo.Book">
+    <!-- 推荐书籍分页查询 -->
+    <select id="findBookRecommended" resultType="com.yyx.pojo.Book">
         SELECT * FROM book
+                    WHERE isRecommended = 1
+    </select>
+
+    <!-- 指定书籍作者后分页查询 -->
+    <select id="findBookByAuthor" resultType="com.yyx.pojo.Book">
+        SELECT * FROM book
+                    WHERE author = #{value}
+    </select>
+
+    <!-- 根据bookId查询book-->
+    <select id="getBook" resultType="com.yyx.pojo.Book">
+        SELECT * FROM book
+                    WHERE id = #{value}
+    </select>
+    <!-- 根据bookId查询目录-->
+    <select id="getBookCategories" resultType="com.yyx.pojo.Category">
+        SELECT * FROM category
+                    WHERE bookId = #{value}
+    </select>
+    <!-- 根据bookId查询评论-->
+    <select id="getBookComments" resultType="com.yyx.pojo.Comment">
+        SELECT * FROM comment
+                    WHERE bookId = #{value}
     </select>
 </mapper>

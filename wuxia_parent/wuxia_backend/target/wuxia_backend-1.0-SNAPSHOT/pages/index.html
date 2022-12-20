@@ -47,28 +47,28 @@
     <!-- 主页左侧栏 -->
     <div class="left">
       <div class="authorNavi">
-        <button type="button" @click="currentFrame='./frame1.html'">
+        <button type="button" @click="currentFrame='./frame1.html?choice=recommend'; refreshFrame()">
           作家栏
         </button>
       </div>
       <ul>
         <li>
-          <button type="button" @click="currentFrame='./frame2.html'">
+          <button type="button" @click="currentFrame='./frame1.html?choice=jinyong'; refreshFrame()">
             金庸
           </button>
         </li>
         <li>
-          <button type="button" @click="currentFrame='./frame3.html'">
+          <button type="button" @click="currentFrame='./frame1.html?choice=gulong'; refreshFrame()">
             古龙
           </button>
         </li>
         <li>
-          <button type="button" @click="currentFrame='./frame4.html'">
+          <button type="button" @click="currentFrame='./frame1.html?choice=wenruian'; refreshFrame()">
             温瑞安
           </button>
         </li>
         <li>
-          <button type="button" @click="currentFrame='./frame5.html'">
+          <button type="button" @click="currentFrame='./frame1.html?choice=liangyusheng'; refreshFrame()">
             梁羽生
           </button>
         </li>
@@ -77,7 +77,7 @@
 
     <!-- 主页右侧栏 -->
     <div class="right">
-      <iframe :src=currentFrame class="rightFrame" scrolling="no"></iframe>
+      <iframe :src=currentFrame class="rightFrame" scrolling="no" id="myframe"></iframe>
     </div>
   </div>
 </body>
@@ -89,9 +89,13 @@
   new Vue({
       el: '#app',
       data: {
-        currentFrame: './frame1.html',
+        currentFrame: './frame1.html?choice=recommend',
       },
       methods: {
+          //刷新iframe ---> 目的是让iframe内部可以识别出自己url中的参数发生了改变, 如果不这样显示刷新它，而只是每次请求改变参数，那么iframe内部会检测不到参数改变了
+          refreshFrame(){
+            document.getElementById('myframe').contentWindow.location.reload();
+         }
       },
       mounted() {
       }

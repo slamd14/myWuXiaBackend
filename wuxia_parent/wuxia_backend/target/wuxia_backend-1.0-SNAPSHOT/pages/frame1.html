@@ -17,8 +17,8 @@
       <ul class="clearfix bookList" v-for="book in bookList">
         <li>
 
-          <a :href="book.pageUrl">
-            <img src={{book.imgSrc}} alt="雪山飞狐" height="330px" width="275px">
+          <a :href="book.bookPageUrl">
+            <img :src="book.imgSrc" alt="雪山飞狐" height="330px" width="275px">
           </a>
           <div class="bookName">&lt;&lt;{{book.bookName}}&gt;&gt;</div>
           <div class="author">{{book.author}}</div>
@@ -36,12 +36,12 @@
               :total="totalData">
       </el-pagination>
     </div>
-    <!-- 主页底栏 -->
-    <div class="foot">
-      <div class="content">联系网站作者: slamd14...@...com</div>
-    </div>
-  </div>
 
+  </div>
+  <!-- 主页底栏 -->
+  <div class="foot">
+    <div class="content">联系网站作者: slamd14...@...com</div>
+  </div>
 <script src="../js/vue.js"></script>
 <script src="../plugins/elementui/index.js"></script>
 <script src="../js/axios-0.18.0.js"></script>
@@ -52,22 +52,28 @@
             currentPage: 1,
             totalData: 300,
             bookList: [],
+            choice: ''
         },
         methods: {
             findPage(){
+                this.choice = this.getUrlParam('choice');
                 let param = {
                     pageSize: 10,
-                    currentPage: this.currentPage
+                    currentPage: this.currentPage,
+                    queryString: this.choice
                 }
                 axios.post("/book/findPage.do", param).then((res) => {
                     if(res){
                         this.totalData = res.data.total;
                         this.bookList = res.data.rows;
-                        for(let book in this.bookList){
-                          let bookId = book.id;
-                          /* TODO 不知道这样能不能改变 */
-                          book.pageUrl = './bookNavi.html?bookId' + bookId;
-                        }
+                        this.bookList = this.bookList.map((book, index) => {
+                            let bookId = book.id;
+                            let pageUrl = './bookNavi.html?bookId=' + bookId;
+                            let temp = {bookPageUrl: pageUrl};
+                            /* 将bookPageUrl属性添加到book中，因为后端JavaBean中的Book并没有这个属性 */
+                            book = {...temp, ...book};
+                            return book;
+                        })
                     }else{
                         this.$message({
                             message: '请求超时',
@@ -79,6 +85,23 @@
             handleCurrentChange(val) {
                 this.currentPage = val;
                 this.findPage();
+            },
+
+            /**
+             * 提取iframe当前url中的参数
+             * @param variable 参数名
+             * @returns {boolean|string}
+             */
+            getUrlParam(variable) {
+                let query = window.location.search.substring(1);
+                let vars = query.split("&");
+                for (let i=0;i<vars.length;i++) {
+                    let pair = vars[i].split("=");
+                    if (pair[0] === variable) {
+                        return pair[1];
+                    }
+                }
+                return false;
             }
         },
         created() {

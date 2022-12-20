@@ -1,6 +1,6 @@
 .left {
     float: left;
-    width: 150px;
+    width: 10%;
     height: 1100px;
     border: 3px solid black;
     border-bottom: 0;
@@ -8,7 +8,7 @@
 
 .right {
     float: right;
-    width: 1753px;
+    width: 90%;
     height: 1100px;
 }
 

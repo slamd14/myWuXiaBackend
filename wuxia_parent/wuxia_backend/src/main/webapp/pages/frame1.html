@@ -51,13 +51,16 @@
         data: {
             currentPage: 1,
             totalData: 300,
-            bookList: []
+            bookList: [],
+            choice: ''
         },
         methods: {
             findPage(){
+                this.choice = this.getUrlParam('choice');
                 let param = {
                     pageSize: 10,
-                    currentPage: this.currentPage
+                    currentPage: this.currentPage,
+                    queryString: this.choice
                 }
                 axios.post("/book/findPage.do", param).then((res) => {
                     if(res){
@@ -82,6 +85,23 @@
             handleCurrentChange(val) {
                 this.currentPage = val;
                 this.findPage();
+            },
+
+            /**
+             * 提取iframe当前url中的参数
+             * @param variable 参数名
+             * @returns {boolean|string}
+             */
+            getUrlParam(variable) {
+                let query = window.location.search.substring(1);
+                let vars = query.split("&");
+                for (let i=0;i<vars.length;i++) {
+                    let pair = vars[i].split("=");
+                    if (pair[0] === variable) {
+                        return pair[1];
+                    }
+                }
+                return false;
             }
         },
         created() {

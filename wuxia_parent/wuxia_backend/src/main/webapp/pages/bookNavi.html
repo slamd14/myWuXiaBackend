@@ -30,33 +30,33 @@
   <div class="bookShort">
     <div class="content">
       <div class="pic"><img :src=book.imgSrc alt="book" width="330px" height="500px"></div>
-      <div class="text">{{book.shortCut}}}</div>
+      <div class="text">{{book.bookShortCut}}</div>
     </div>
   </div>
   <!-- 目录-->
   <div class="bookCatalog clearfix">
-    <ul v-for="category in book.category">
-      <li><a href="#">{{category}}</a></li>
+    <ul v-for="category in bookCategories">
+      <li><a :href=category.categoryUrl>{{category.categoryName}}</a></li>
     </ul>
   </div>
   <!-- 最新书评-->
   <div class="bookComment">
     <el-table
             id="commentTable"
-            :data="tableData"
+            :data="bookComments"
             style="width: 100%">
       <el-table-column type="expand">
         <template slot-scope="props">
           <el-form label-position="left" inline class="demo-table-expand">
             <el-form-item label="全部评论">
-              <span>{{ props.row.content_all }}</span>
+              <span>{{ props.row.content }}</span>
             </el-form-item>
           </el-form>
         </template>
       </el-table-column>
       <el-table-column
               label="评论者昵称"
-              prop="name">
+              prop="username">
       </el-table-column>
       <el-table-column
               label="评论时间"
@@ -73,39 +73,71 @@
 
 <script src="../js/vue.js"></script>
 <script src="../plugins/elementui/index.js"></script>
+<script src="../js/axios-0.18.0.js"></script>
 <script>
     new Vue({
         el: '#app',
         data: {
-            tableData: [{
-                id: '12987122',
-                name: '好滋好味鸡蛋仔',
-                time: '2022-12-19',
-                // content_short准备只截取content_all的前面一些字
-                content_short: '雪山飞狐成书早，金庸在写作时进行了大胆探索...',
-                content_all: '雪山飞狐成书早，金庸在写作时进行了大胆探索，借鉴了很多电影手法，对同一个事件从多个角度来讲，具有很高的艺术性，算是小说中的《罗生门》。之后金庸在天龙八部中使用多线描写的时候轻车熟路，其中不乏雪山飞狐的功劳。雪山飞狐在金庸15部小说中，可以算是中上之作。苗若兰一句“我很欢喜”，四个字就足以震撼心灵。'
-            }, {
-                id: '312312312',
-                name: '猪猪',
-                time: '2022-12-19',
-                content_short: '雪山飞狐就是个没写完的半成品，包括反...',
-                content_all: '雪山飞狐就是个没写完的半成品，包括反派的结局，男女主的感情归属，男主与准岳父的恩怨纠葛，统统没有交代清楚，以致居然以男主与苗人凤的最后一战中的关键一招有没有使出来作开放式结尾。这实在太不像金庸小说的写作方式了，这边反派的剧情还没整明白呢，那边男主与准岳父还在为了其实几句话都能说明白的事家暴不止，后来究竟怎么样了也没个下文，然后就开放式结局了，我只能说网文都不敢这么写。因此在我看完后觉得金庸应该是写不下去了，或者感觉不论怎么写，结局都要烂尾，所以索性弄个开放式结尾让读者去脑补一个自己心目中不那么烂的结局。'
-            }],
-            book: {
-                imgSrc: '../images/雪山飞狐.jpg',
-                shortCut: '《雪山飞狐》是当代作家金庸创作的长篇武侠小说，该作品共十回，1959年始连载于香港《新晚报》。英译本由莫锦屏翻译，香港中文大学出版社于1993年推出。\n' +
-                    '        小说以苗人凤和胡一刀夫妇为主角，通过宝树、苗人凤之女苗若兰、平阿四及陶百岁之口讲述了数年前与此相关的武林风波，用倒叙的手法讲述了江湖恩怨、藏宝寻宝、美女爱英雄的故事。这部小说有两个重大的线索，属双线结构，真正的人物也在前台表演甚少。',
-                category: [
-                    '第一章 天涯思君不可忘','第二章 武当山顶松柏长','第三章 不识张郎是张郎'
-                ]
-            }
+            book: {},
+            bookId: '',
+            bookCategories: [],
+            bookComments: []
         },
         methods: {
-
+            /**
+             * 提取iframe当前url中的参数
+             * @param variable 参数名
+             * @returns {boolean|string}
+             */
+            getUrlParam(variable) {
+                let query = window.location.search.substring(1);
+                let vars = query.split("&");
+                for (let i=0;i<vars.length;i++) {
+                    let pair = vars[i].split("=");
+                    if (pair[0] === variable) {
+                        return pair[1];
+                    }
+                }
+                return false;
+            },
+            getBook(bookId) {
+                axios.get("/book/getBook.do?bookId=" + bookId).then((resp)=> {
+                    if (resp.data.flag) {
+                        this.book = resp.data.data;
+                    }
+                })
+            },
+            getBookCategories(bookId) {
+                axios.get("/book/getBookCategories.do?bookId=" + bookId).then((resp)=> {
+                    if (resp.data.flag) {
+                        this.bookCategories = resp.data.data;
+                    }
+                })
+            },
+            getBookComments(bookId) {
+                axios.get("/book/getBookComments.do?bookId=" + bookId).then((resp)=> {
+                    if(resp.data.flag) {
+                        this.bookComments = resp.data.data;
+                        this.bookComments = this.bookComments.map((comment, index) => {
+                            // 截取一部分作为短评
+                            let shortContent = comment.content.substring(0,12) + '...';
+                            let temp = {
+                                content_short: shortContent
+                            }
+                            comment = {...temp, ...comment};
+                            return comment;
+                        })
+                    }
+                })
+            },
         },
-        mounted() {
-            // 获取当前页面的url
-            var url = window.location.href;
+        created() {
+            this.bookId = this.getUrlParam('bookId');
+            // 查询书籍相关内容---> 图片、简介、目录
+            this.getBook(this.bookId);
+            this.getBookCategories(this.bookId);
+            // 查询相关评论
+            this.getBookComments(this.bookId);
         }
     });
 </script>
