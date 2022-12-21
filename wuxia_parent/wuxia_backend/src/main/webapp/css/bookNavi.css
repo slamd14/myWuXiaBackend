@@ -32,9 +32,21 @@
     width: 1400px;
 }
 
-.bookCatalog li {
+.bookCatalog ul {
     float: left;
-    margin: 5px 10px;
+    width: 250px;
+    height: 40px;
+    margin: 10px 10px;
+}
+.bookCatalog ul li {
+    width: 250px;
+    height: 40px;
+}
+
+.bookCatalog ul a {
+    display: inline-block;
+    width: 250px;
+    height: 40px;
 }
 
 .bookCatalog li a:hover {

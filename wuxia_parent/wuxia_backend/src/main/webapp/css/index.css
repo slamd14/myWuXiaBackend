@@ -1,7 +1,7 @@
 .left {
     float: left;
     width: 10%;
-    height: 1100px;
+    height: 1500px;
     border: 3px solid black;
     border-bottom: 0;
 }
@@ -9,7 +9,7 @@
 .right {
     float: right;
     width: 90%;
-    height: 1100px;
+    height: 1500px;
 }
 
 .right .rightFrame {

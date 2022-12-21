@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/wuxia_parent/wuxia_backend/wuxia_backend.iml" filepath="$PROJECT_DIR$/wuxia_parent/wuxia_backend/wuxia_backend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/health_parent/wuxia_parent.iml" filepath="$PROJECT_DIR$/health_parent/wuxia_parent.iml" />
+    </modules>
+  </component>
+</project>

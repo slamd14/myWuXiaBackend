@@ -1,0 +1,37 @@
+body {
+    background-color: #dafada;
+    line-height: 25px;
+}
+
+#container {
+    padding: 0 500px;
+}
+
+p {
+    text-indent: 4ex;
+}
+
+h1, h2 {
+    padding-left: 30px;
+}
+
+.next {
+    text-align: center;
+    padding-left: 30px;
+}
+
+.next a {
+    display: inline-block;
+    margin: 15px 30px 50px;
+    width: 60px;
+    height: 30px;
+    color: black;
+    text-decoration: none;
+    text-align: center;
+    line-height: 30px;
+    border: 2px solid #cccccc;
+}
+
+.next a:hover {
+    background-color: #b3d8ff;
+}
