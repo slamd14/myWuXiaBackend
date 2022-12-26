@@ -1,0 +1,65 @@
+body {
+    background-image: url("../images/bgi.jpg");
+}
+
+.register {
+    position: relative;
+    padding: 70px 300px 0 240px;
+    margin: 100px auto;
+    width: 1200px;
+    height: 600px;
+    background-color: rgba(0, 0, 0, 0.13);
+    border: 5px solid rgba(0, 0, 0, 0.28);
+}
+
+.register .top {
+    margin-bottom: 30px;
+    margin-left: 60px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.82);
+}
+
+.register #button .el-form-item__content {
+    margin-left: 280px !important;
+}
+
+.register #button .el-form-item__content button{
+    background: rgba(204, 204, 204, 0.16);
+    border: 2px solid rgba(204, 204, 204, 0.2);
+    color: white;
+}
+
+.register #button .el-form-item__content button:hover{
+    background-color: rgba(219, 250, 247, 0.53);
+}
+
+.register .el-form .el-form-item .el-form-item__label{
+    color: white !important;
+}
+
+#app > div > form > div:nth-child(-n+5) > div > div.el-input > input {
+    background-color: rgba(0, 0, 0, 0); !important;
+    color: white;
+    border: 3px solid rgba(204, 204, 204, 0.28);
+}
+
+#uploadAvatar {
+    position: absolute;
+    top: 180px;
+    right: 190px;
+    width: 150px;
+    height: 50px;
+}
+
+#uploadAvatar > div > div > div {
+    width: 100px;
+    height: 100px;
+}
+
+#app > div > form > div.text {
+    position: absolute;
+    top: 400px;
+    right: 105px;
+    color: rgba(255, 255, 255, 0.87);
+    font-size: 20px;
+}

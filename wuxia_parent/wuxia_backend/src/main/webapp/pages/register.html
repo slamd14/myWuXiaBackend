@@ -1,0 +1,230 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/register.css">
+<!--  不全面: -->
+<!--  <link rel="stylesheet" href="../plugins/elementui/index.css">-->
+  <link rel="stylesheet" href="../plugins/element-ui/packages/theme-chalk/lib/index.css">
+  <link rel="stylesheet" href="../plugins/font-awesome/css/font-awesome.min.css">
+</head>
+<body>
+<div id="app">
+  <div class="register">
+    <h1 class="top">
+      注册
+    </h1>
+
+    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+      <el-form-item label="帐号" prop="account">
+        <el-input v-model="ruleForm.account"></el-input>
+      </el-form-item>
+      <el-form-item label="密码" prop="password">
+        <el-input type="password" v-model="ruleForm.password" autocomplete="off"></el-input>
+      </el-form-item>
+      <el-form-item label="确认密码" prop="checkPassword">
+        <el-input type="password" v-model="ruleForm.checkPassword" autocomplete="off"></el-input>
+      </el-form-item>
+      <el-form-item label="电子邮箱" prop="mail">
+        <el-input v-model="ruleForm.mail"></el-input>
+      </el-form-item>
+      <el-form-item label="手机号码" prop="phone">
+        <el-input v-model="ruleForm.phone"></el-input>
+      </el-form-item>
+      <el-form-item label="" id="uploadAvatar">
+        <el-upload
+                class="avatar-uploader"
+                action="/register/upload.do"
+                :auto-upload="autoUpload"
+                name="imgFile"
+                :show-file-list="false"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload">
+          <img v-if="imageUrl" :src="imageUrl" class="avatar" alt="userAvatar" width="200px" height="200px" style="opacity: 1; border-radius: 50%;">
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        </el-upload>
+      </el-form-item>
+      <div class="text">上传头像</div>
+      <el-form-item id="button">
+        <el-button @click="register('ruleForm')">注册</el-button>
+      </el-form-item>
+    </el-form>
+
+    <div class="backLogin"><a href="./login.html"><i class="el-icon-arrow-left"></i>登录</a></div>
+  </div>
+</div>
+
+
+<script src="../js/vue.js"></script>
+<script src="../plugins/elementui/index.js"></script>
+<script src="../js/axios-0.18.0.js"></script>
+<script src="../js/snow.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data() {
+            let validatePass = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请输入密码'));
+                } else {
+                    if (this.ruleForm.checkPassword !== '') {
+                        this.$refs.ruleForm.validateField('checkPassword');
+                    }
+                    callback();
+                }
+            };
+            let validatePass2 = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请再次输入密码'));
+                } else if (value !== this.ruleForm.password) {
+                    callback(new Error('两次输入密码不一致!'));
+                } else {
+                    callback();
+                }
+            };
+            let validatePass3 = (rule, value, callback) => {
+                // 正则表达式校验邮箱
+                const regEmail = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+                if (regEmail.test(value)) {
+                    // 合法的邮箱
+                    callback();
+                } else {
+                    callback(new Error('错误的邮箱格式'));
+                }
+            };
+
+            let validatePass4 = (rule, value, callback) => {
+                if (value === "") {
+                    callback(new Error("手机号不可为空"));
+                } else {
+                    if (value !== "") {
+                        let reg = /^1[3-9]\d{9}$/;
+                        if (!reg.test(value)) {
+                            callback(new Error("请输入有效的手机号码"));
+                        }
+                    }
+                    callback();
+                }
+            };
+
+            return {
+                ruleForm: {
+                    account: '',
+                    password: '',
+                    checkPassword: '',
+                    mail: '',
+                    phone: '',
+                },
+                imageUrl: '../images/wenrou.jpg',
+                rules: {
+                    account: [
+                        {required: true, message: '请输入帐号', trigger: 'blur'},
+                        {min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur'}
+                    ],
+                    password: [
+                        { validator: validatePass, trigger: 'blur', required: true},
+                        {min:8, max:16, message: '长度在8 到 16 个字符', trigger: 'blur'}
+                    ],
+                    checkPassword: [
+                        { validator: validatePass2, trigger: 'blur', required: true},
+                        {min:8, max:16, message: '长度在8 到 16 个字符', trigger: 'blur'}
+                    ],
+                    mail: [
+                        { validator: validatePass3, trigger: 'blur', required: true},
+                    ],
+                    phone: [
+                        { required: true, message: "请输入电话", trigger: "blur" },
+                        { validator: validatePass4, trigger: 'blur', required: true, min: 11,
+                            max: 11,
+                            message: "手机号格式错误"}
+                    ]
+                }
+            }
+        },
+        // data: {
+        //     validatePass: (rule, value, callback) => {
+        //         if (value === '') {
+        //             callback(new Error('请再次输入密码'));
+        //         } else if (value !== this.ruleForm.pass) {
+        //             callback(new Error('两次输入密码不一致!'));
+        //         } else {
+        //             callback();
+        //         }
+        //     },
+        //     validatePass2: (rule, value, callback) => {
+        //         if (value === '') {
+        //             callback(new Error('请再次输入密码'));
+        //         } else if (value !== this.ruleForm.pass) {
+        //             callback(new Error('两次输入密码不一致!'));
+        //         } else {
+        //             callback();
+        //         }
+        //     },
+        //     ruleForm: {
+        //         account: '',
+        //         password: '',
+        //         checkPassword: ''
+        //     },
+        //     rules: {
+        //         account: [
+        //             {required: true, message: '请输入帐号', trigger: 'blur'},
+        //             {min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur'}
+        //         ],
+        //         password: [
+        //             { validator: this.validatePass, trigger: 'blur' }
+        //         ],
+        //         checkPassword: [
+        //             { validator: this.validatePass2, trigger: 'blur' }
+        //         ],
+        //     }
+        // },
+        methods: {
+            register(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        alert('submit!');
+                        window.location.href = "./login.html";
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
+            },
+            //文件上传成功后的钩子(钩子函数本质应该就是回调函数，就是ajax请求收到响应之后执行的函数)，response为服务端返回的值，file为当前上传的文件封装成的js对象
+            handleAvatarSuccess(response, file) {
+                // 为模型数据imageUrl赋值，用于页面图片预览
+                var imageUrlPre = "https://chuanzhi-health-slamd14.oss-cn-wulanchabu.aliyuncs.com/userAvator_wuxia/"; // 阿里云OSS中已经上传了的文件的url固定前缀
+                // 有一个疑问：为什么之前从resp中提取数据，都是从resp.data中提取, 而这里却是直接从resp中提取数据，为什么?
+                // 因为这个回调函数并不是我们自己(手动)发送的ajax请求的回调，而是elementUI自带的，框架已经进行了封装。这里的response已经相当于原先的resp.data了
+                var imageName = response.data;
+                this.imageUrl = imageUrlPre + imageName; // 阿里云OSS中已经上传了的文件的url
+                this.$message({
+                    type: response.flag ? 'success' : 'error',
+                    message: response.message
+                })
+                // 设置模型数据(图片名称)， 后续提交ajax请求时会提交到后台最终保存到数据库
+                this.formData.img = imageName;
+
+            },
+            //上传图片之前执行
+            beforeAvatarUpload(file) {
+                const isJPG = file.type === 'image/jpeg';
+                const isPNG = file.type === 'image/png';
+                const isLt2M = file.size / 1024 / 1024 < 4;
+                if (!isJPG && !isPNG) {
+                    this.$message.error('上传套餐图片只能是 JPG或PNG 格式!');
+                }
+                if (!isLt2M) {
+                    this.$message.error('上传套餐图片大小不能超过 4MB!');
+                }
+                return (isJPG||isPNG) && isLt2M;
+            },
+
+        }
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+body {
+    background-image: url("../images/bgi.jpg");
+}
+
+.loginBox {
+    padding: 70px 300px 0 240px;
+    margin: 100px auto;
+    width: 1200px;
+    height: 500px;
+    background-color: rgba(0, 0, 0, 0.13);
+    border: 5px solid rgba(0, 0, 0, 0.28);
+}
+
+.loginBox .top {
+    margin-bottom: 30px;
+    margin-left: 60px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.82);
+}
+
+.loginBox #button .el-form-item__content {
+    margin-left: 280px !important;
+}
+
+.loginBox #button .el-form-item__content button{
+    background: rgba(204, 204, 204, 0.16);
+    border: 2px solid rgba(204, 204, 204, 0.2);
+    color: white;
+}
+
+.loginBox #button .el-form-item__content button:hover{
+    background-color: rgba(219, 250, 247, 0.53);
+}
+
+.loginBox .el-form .el-form-item .el-form-item__label{
+    color: white !important;
+}
+
+#app > div > form > div:nth-child(-n+2) > div > div.el-input > input {
+    background-color: rgba(0, 0, 0, 0); !important;
+    color: white;
+    border: 3px solid rgba(204, 204, 204, 0.28);
+}
+

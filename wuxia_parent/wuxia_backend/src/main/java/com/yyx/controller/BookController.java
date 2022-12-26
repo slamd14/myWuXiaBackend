@@ -23,16 +23,18 @@ public class BookController {
 
     /**
      * 分页查询
+     *
      * @param queryPageBean
      * @return
      */
     @RequestMapping("/findPage")
-    public PageResult findPage(@RequestBody QueryPageBean queryPageBean){
+    public PageResult findPage(@RequestBody QueryPageBean queryPageBean) {
         return bookService.findPage(queryPageBean);
     }
 
     /**
      * 根据bookId查询book
+     *
      * @param bookId
      * @return
      */

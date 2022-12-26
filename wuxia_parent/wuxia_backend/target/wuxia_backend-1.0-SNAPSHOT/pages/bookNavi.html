@@ -35,8 +35,8 @@
   </div>
   <!-- 目录-->
   <div class="bookCatalog clearfix">
-    <ul v-for="category in book.category">
-      <li><a :href=category.categoryUrl>{{category.categoryName}}</a></li>
+    <ul v-for="category in bookCategories">
+      <li><a :href=category.categoryUrl target="_blank">{{category.categoryName}}</a></li>
     </ul>
   </div>
   <!-- 最新书评-->
@@ -56,7 +56,7 @@
       </el-table-column>
       <el-table-column
               label="评论者昵称"
-              prop="name">
+              prop="username">
       </el-table-column>
       <el-table-column
               label="评论时间"
@@ -111,15 +111,11 @@
                 axios.get("/book/getBookCategories.do?bookId=" + bookId).then((resp)=> {
                     if (resp.data.flag) {
                         this.bookCategories = resp.data.data;
-                        let temp={
-                            category: this.bookCategories
-                        }
-                        this.book = {...temp, ...this.book};
                     }
                 })
             },
             getBookComments(bookId) {
-                this.get("/book/getBookComments.do?bookId=" + bookId).then((resp)=> {
+                axios.get("/book/getBookComments.do?bookId=" + bookId).then((resp)=> {
                     if(resp.data.flag) {
                         this.bookComments = resp.data.data;
                         this.bookComments = this.bookComments.map((comment, index) => {
@@ -141,7 +137,7 @@
             this.getBook(this.bookId);
             this.getBookCategories(this.bookId);
             // 查询相关评论
-            this.getBookComment(this.bookId);
+            this.getBookComments(this.bookId);
         }
     });
 </script>

@@ -21,6 +21,11 @@ body {
     border-radius: 50%;
 }
 
+.el-dropdown-menu .el-dropdown-menu__item a{
+    display: inline-block !important;
+    height: 36px !important;
+}
+
 
 
 
