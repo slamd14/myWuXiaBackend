@@ -1,7 +1,0 @@
-0:0:0:0:0:0:0:1 - - [23/Dec/2022:14:09:31 +0800] "GET /css/common.css HTTP/1.1" 304 - http-bio-8888-exec-2 73
-0:0:0:0:0:0:0:1 - - [23/Dec/2022:14:09:31 +0800] "GET /css/index.css HTTP/1.1" 304 - http-bio-8888-exec-3 73
-0:0:0:0:0:0:0:1 - - [23/Dec/2022:14:09:31 +0800] "GET /css/base.css HTTP/1.1" 304 - http-bio-8888-exec-6 69
-0:0:0:0:0:0:0:1 - - [23/Dec/2022:14:09:31 +0800] "GET /images/25231.png HTTP/1.1" 200 8640 http-bio-8888-exec-8 34
-0:0:0:0:0:0:0:1 - - [23/Dec/2022:14:09:31 +0800] "GET /js/vue.js HTTP/1.1" 200 300248 http-bio-8888-exec-5 48
-0:0:0:0:0:0:0:1 - - [23/Dec/2022:14:09:31 +0800] "GET /pages/frame1.html?choice=recommend HTTP/1.1" 200 3825 http-bio-8888-exec-5 8
-0:0:0:0:0:0:0:1 - - [23/Dec/2022:14:09:32 +0800] "POST /book/findPage.do HTTP/1.1" 200 2231 http-bio-8888-exec-5 493

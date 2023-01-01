@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyx.dao.LoginDao">
+
+    <select id="getPwd" resultType="java.lang.String">
+        SELECT password FROM user WHERE account = #{value}
+    </select>
+    <select id="getAvatar" resultType="java.lang.String">
+        SELECT avatar FROM user WHERE account = #{value}
+    </select>
+</mapper>

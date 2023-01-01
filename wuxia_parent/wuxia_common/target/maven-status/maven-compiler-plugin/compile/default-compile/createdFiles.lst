@@ -1,3 +1,4 @@
+com\yyx\pojo\User.class
 com\yyx\entity\PageResult.class
 com\yyx\constant\RedisConstant.class
 com\yyx\pojo\Category.class

@@ -1,2 +1,6 @@
+com\yyx\dao\LoginDao.class
+com\yyx\dao\RegisterDao.class
+com\yyx\service\impl\LoginServiceImpl.class
+com\yyx\service\impl\RegisterServiceImpl.class
 com\yyx\dao\BookDao.class
 com\yyx\service\impl\BookServiceImpl.class

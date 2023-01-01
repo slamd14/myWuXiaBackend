@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/personalCenter.css">
+  <link rel="stylesheet" href="../plugins/element-ui/packages/theme-chalk/lib/index.css">
+  <link rel="stylesheet" href="../plugins/font-awesome/css/font-awesome.min.css">
+</head>
+<body>
+  <div id="app">
+    <div class="top clearfix">
+      <div class="left">
+        <div class="editProfile"><a href="#">个人资料<i class="el-icon-edit"></i></a></div>
+        <el-upload
+                id="userAvatar"
+                class="avatar-uploader"
+                action="#"
+                :auto-upload="autoUpload"
+                name="imgFile"
+                :show-file-list="false"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload">
+          <img v-if="imageUrl" :src="imageUrl" class="avatar" alt="userAvatar" width="100px" height="100px" style="opacity: 1; border-radius: 50%;">
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        </el-upload>
+        <div class="attention"><a href="#">关注</a></div>
+        <div class="message"><a href="#">消息</a></div>
+      </div>
+      <div class="center">
+        <h3>最近阅读</h3>
+        <ul>
+          <li><a href="#"><i class="el-icon-reading"></i>&nbsp;&nbsp; 大地飞鹰 第3章</a></li>
+          <li><a href="#"><i class="el-icon-reading"></i>&nbsp;&nbsp; 大地飞鹰 第4章</a></li>
+          <li><a href="#"><i class="el-icon-reading"></i>&nbsp;&nbsp; 大地飞鹰 第5章</a></li>
+        </ul>
+        <h4><a href="#">阅读历史</a></h4>
+      </div>
+      <div class="right">
+        <h3 class="comment">我的书评</h3>
+        <ul>
+          <li><a href="#"><i class="el-icon-chat-line-round"></i>&nbsp;&nbsp; 大地飞鹰是一本很好看的书,我很喜欢看,因为大地飞鹰是一本很好看的书,我很喜欢看,因为...</a></li>
+          <li><a href="#"><i class="el-icon-chat-line-round"></i>&nbsp;&nbsp; 大地飞鹰是一本很好看的书,我很喜欢看,因为大地飞鹰是一本很好看的书,我很喜欢看,因为...</a></li>
+          <li><a href="#"><i class="el-icon-chat-line-round"></i>&nbsp;&nbsp; 大地飞鹰是一本很好看的书,我很喜欢看,因为大地飞鹰是一本很好看的书,我很喜欢看,因为...</a></li>
+        </ul>
+        <h4><a href="#">查看所有</a></h4>
+      </div>
+    </div>
+    <div class="bottom">
+      <h3>个人文章</h3>
+      <ul>
+        <li><a href="#">三世恩怨</a></li>
+        <li><a href="#">天涯思君不可忘</a></li>
+        <li><a href="#">侠之大者，为国为民</a></li>
+      </ul>
+      <h4><el-button type="primary">创作者中心</el-button></h4>
+    </div>
+  </div>
+
+<script src="../js/vue.js"></script>
+<script src="../plugins/elementui/index.js"></script>
+<script src="../js/axios-0.18.0.js"></script>
+<script>
+  new Vue({
+      el: '#app',
+      data() {
+          return {
+              imageUrl: '../images/wenrou.jpg',
+          }
+      },
+      methods: {
+          //文件上传成功后的钩子(钩子函数本质应该就是回调函数，就是ajax请求收到响应之后执行的函数)，response为服务端返回的值，file为当前上传的文件封装成的js对象
+          handleAvatarSuccess(response, file) {
+              // 为模型数据imageUrl赋值，用于页面图片预览
+              var imageUrlPre = "https://chuanzhi-health-slamd14.oss-cn-wulanchabu.aliyuncs.com/userAvator_wuxia/"; // 阿里云OSS中已经上传了的文件的url固定前缀
+              // 有一个疑问：为什么之前从resp中提取数据，都是从resp.data中提取, 而这里却是直接从resp中提取数据，为什么?
+              // 因为这个回调函数并不是我们自己(手动)发送的ajax请求的回调，而是elementUI自带的，框架已经进行了封装。这里的response已经相当于原先的resp.data了
+              var imageName = response.data;
+              this.imageUrl = imageUrlPre + imageName; // 阿里云OSS中已经上传了的文件的url
+              this.$message({
+                  type: response.flag ? 'success' : 'error',
+                  message: response.message
+              })
+              // 设置模型数据(图片名称)， 后续提交ajax请求时会提交到后台最终保存到数据库
+              this.formData.img = imageName;
+
+          },
+          //上传图片之前执行
+          beforeAvatarUpload(file) {
+              const isJPG = file.type === 'image/jpeg';
+              const isPNG = file.type === 'image/png';
+              const isLt2M = file.size / 1024 / 1024 < 4;
+              if (!isJPG && !isPNG) {
+                  this.$message.error('上传套餐图片只能是 JPG或PNG 格式!');
+              }
+              if (!isLt2M) {
+                  this.$message.error('上传套餐图片大小不能超过 4MB!');
+              }
+              return (isJPG||isPNG) && isLt2M;
+          },
+      }
+  })
+</script>
+</body>
+</html>

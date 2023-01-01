@@ -1,1 +1,3 @@
+com\yyx\service\RegisterService.class
 com\yyx\service\BookService.class
+com\yyx\service\LoginService.class

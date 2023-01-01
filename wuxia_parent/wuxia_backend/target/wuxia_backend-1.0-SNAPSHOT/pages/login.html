@@ -49,11 +49,11 @@
           rules: {
               account: [
                   {required: true, message: '请输入帐号', trigger: 'blur'},
-                  {min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur'}
+                  {min: 5, max: 10, message: '长度在 5 到 10 个字符', trigger: 'blur'}
               ],
               password: [
                   {required: true, message: '请输入密码', trigger: 'blur'},
-                  {min: 6, max: 16, message: '长度在 6 到 16 个字符', trigger: 'blur'}
+                  {min: 8, max: 16, message: '长度在 8 到 16 个字符', trigger: 'blur'}
               ]
           }
       },
@@ -61,7 +61,24 @@
           submitForm(formName) {
               this.$refs[formName].validate((valid) => {
                   if (valid) {
-                      alert('submit!');
+                      axios.post("/login/login.do", this.ruleForm).then((res) => {
+                          if (res.data.flag) {
+                              this.$message({
+                                  type: 'success',
+                                  message: '登陆成功',
+                                  duration: 1000
+                              })
+                              // 1s以后跳转
+                              this.goIndex(1);
+                          } else {
+                              this.$message({
+                                  type: 'error',
+                                  message: res.data.message,
+                                  duration: 3000
+                              })
+                          }
+                      })
+
                   } else {
                       console.log('error submit!!');
                       return false;
@@ -70,6 +87,15 @@
           },
           regis() {
               window.location.href = "./register.html";
+          },
+          // 定时跳转
+          goIndex(time) {
+              setInterval(() => {
+                time--;
+                if (time <= 0) {
+                    window.location.href = "./index.html";
+                }
+              }, 1000)
           }
       }
   })

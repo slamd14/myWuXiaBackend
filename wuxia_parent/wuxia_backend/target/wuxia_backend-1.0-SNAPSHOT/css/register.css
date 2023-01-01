@@ -20,7 +20,7 @@ body {
 }
 
 .register #button .el-form-item__content {
-    margin-left: 280px !important;
+    margin-left: 320px !important;
 }
 
 .register #button .el-form-item__content button{
@@ -62,4 +62,26 @@ body {
     right: 105px;
     color: rgba(255, 255, 255, 0.87);
     font-size: 20px;
+}
+
+.register .backLogin {
+    position: absolute;
+    width: 100px;
+    height: 30px;
+    left: 0;
+    top: 15px;
+    text-align: center;
+    line-height: 30px;
+}
+
+.register .backLogin a {
+    display: inline-block;
+    width: 100px;
+    height: 30px;
+    color: white;
+    font-size: 20px;
+}
+
+.register .backLogin a:hover{
+    color: #8cc5ff;
 }

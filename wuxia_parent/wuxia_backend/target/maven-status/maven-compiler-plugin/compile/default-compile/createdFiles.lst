@@ -1,2 +1,3 @@
 com\yyx\controller\RegisterController.class
+com\yyx\controller\LoginController.class
 com\yyx\controller\BookController.class
